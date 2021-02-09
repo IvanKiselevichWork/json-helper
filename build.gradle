@@ -10,14 +10,21 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 jar {
+
     manifest {
         attributes(
-                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
                 'Main-Class': 'com.epam.Main'
         )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect {
+            File file -> file.isDirectory() ? file : zipTree(file)
+        }
     }
 }
